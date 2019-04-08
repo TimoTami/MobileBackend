@@ -25,25 +25,31 @@ namespace MobileBackend.Controllers
 
             try
             {
-                var sama = (from e in entities.Employees
-                                 where (e.UserName == input.username)
-                                 select e.UserName);
+                //var sama = from e in entities.Employees
+                //                 where e.UserName == input.username
+                //                 select e.UserName;
 
-                if (sama!=null)
+                var sama = entities.Employees.Any(u => u.UserName == input.username);
+
+                if (sama == true)
                 {
-                    return Request.CreateResponse(HttpStatusCode.Unauthorized, "Username is in use. Please try to make up another one.");
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized, "Username is in use. Please try to make up another one."
+                        + sama.ToString());
                 }
+                else
+                {
 
-                Employee employee = new Employee();
-                employee.FirstName = input.firstname;
-                employee.LastName = input.lastname;
-                employee.PhoneNumber = input.phonenumber;
-                employee.EmailAddress = input.email;
-                employee.UserName = input.username;
-                employee.Password = input.password;
-                entities.Employees.Add(employee);
-                entities.SaveChanges();
-                return Request.CreateResponse(HttpStatusCode.Accepted, "Successfully Created");
+                    Employee employee = new Employee();
+                    employee.FirstName = input.firstname;
+                    employee.LastName = input.lastname;
+                    employee.PhoneNumber = input.phonenumber;
+                    employee.EmailAddress = input.email;
+                    employee.UserName = input.username;
+                    employee.Password = input.password;
+                    entities.Employees.Add(employee);
+                    entities.SaveChanges();
+                    return Request.CreateResponse(HttpStatusCode.Accepted, "Successfully Created");
+                }
             }
 
             finally
