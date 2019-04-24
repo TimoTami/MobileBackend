@@ -12,9 +12,8 @@ namespace MobileBackend.Controllers
     [RoutePrefix("/api/login")]
     public class LoginController : ApiController
     {
-       
+        public static Employee nimi;
         MobileDBEntities1 entities = new MobileDBEntities1();
-
 
         [HttpPost]
         [ActionName("XAMARIN_REG")]
@@ -22,13 +21,8 @@ namespace MobileBackend.Controllers
         public HttpResponseMessage Xamarin_reg(NewUserModel input)/*(string firstname, string lastname, string phonenumber, string email, string username, string password)*/
         {
             
-
             try
             {
-                //var sama = from e in entities.Employees
-                //                 where e.UserName == input.username
-                //                 select e.UserName;
-
                 var sama = entities.Employees.Any(u => u.UserName == input.username);
 
                 if (sama == true)
@@ -62,9 +56,8 @@ namespace MobileBackend.Controllers
         [ActionName("XAMARIN_Login")]
         // GET: api/Login/5  
         //public HttpResponseMessage Xamarin_login(NewUserModel output)
-            public HttpResponseMessage Xamarin_login(string username, string password)
-        {
-            
+        public HttpResponseMessage Xamarin_login(string username, string password)
+        { 
             try
             {
                 var user = entities.Employees.Where(x => x.UserName == username && x.Password == password).FirstOrDefault();
@@ -74,14 +67,45 @@ namespace MobileBackend.Controllers
                 }
                 else
                 {
+                    nimi = user;
+                    user.Active = true;
+                    entities.SaveChanges();
                     return Request.CreateResponse(HttpStatusCode.Accepted, "Success");
                 }
             }
             finally
             {
-
                 entities.Dispose();
             }
         }
+        //[HttpPut]
+        //[ActionName("XAMARIN_Logout")]
+        //public HttpResponseMessage Xamarin_logout(NewUserModel input)
+        //{
+        //    ////ei tarvi parametrejä, voi vaan pistää kaikki falseksi
+
+        //    //var kaikkiEmployeet = entities.Employees.Where(k => k.Active == true);
+        //    //var employeeLogout = entities.Employees.Where(u => u.UserName == input.username).FirstOrDefault();
+
+        //    //if (employeeLogout == null)
+        //    //{
+        //    //    return Request.CreateResponse(HttpStatusCode.Unauthorized, "Vika");
+        //    //}
+
+        //    //else
+        //    //{
+        //    //    foreach (var employee in kaikkiEmployeet)
+        //    //    {
+        //    //        employee.Active = false;
+        //    //    }
+        //    //    //employeeLogout.Active = false;
+        //    //    entities.SaveChanges();
+
+        //    //    return Request.CreateResponse(HttpStatusCode.Accepted, "Successfully LoggedOut. ");
+                
+        //    //    //+ "Username: "+employeeLogout.UserName.ToString()+
+        //    //        //" Etunimi: "+employeeLogout.FirstName.ToString()+" Aktiivisuus: "+employeeLogout.Active.Value.ToString());
+        //    //}
+        //}
     }
 }

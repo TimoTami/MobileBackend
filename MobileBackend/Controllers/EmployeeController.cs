@@ -11,38 +11,65 @@ namespace MobileBackend.Controllers
 {
     public class EmployeeController : ApiController
     {
-        public string[] GetAll()
+        //public string[] GetAll()
+        //{
+        //    string[] employeeNames = null;
+        //    //Employee juu;
+        //    MobileDBEntities1 entities = new MobileDBEntities1();
+        //    try
+        //    {
+        //        //juu = (from f in entities.Employees where (f.FirstName == "Hius") && (f.LastName == "Harja") select f ).FirstOrDefault();
+
+        //        //juu.EmployeePicture = File.ReadAllBytes(@"C:\x\HiusHarja2.png");
+        //        //entities.SaveChanges();
+
+        //        //Employee newEmployee = new Employee()
+        //        //{
+        //        //    FirstName = "Hienolainen",
+        //        //    LastName = "Harjalainen",
+        //        //    Active = true,
+        //        //    EmployeePicture = File.ReadAllBytes(@"C:\x\HiusHarja.png")
+        //        //};
+        //        //entities.Employees.Add(newEmployee);
+        //        //entities.SaveChanges();
+
+        //        employeeNames = (from e in entities.Employees
+        //                                      where (e.Active == true)
+        //                                      select e.FirstName + " " + e.LastName).ToArray();
+        //    }
+        //    finally
+        //    {
+
+        //        entities.Dispose();
+        //    }
+        //    return employeeNames;
+        //}
+        public string[] GetEmployee()
         {
-            string[] employeeNames = null;
-            //Employee juu;
+            //string[] employeeName = null;
+            string[] pekka = null;
+            //string[] nn = null;
+            
             MobileDBEntities1 entities = new MobileDBEntities1();
             try
             {
-                //juu = (from f in entities.Employees where (f.FirstName == "Hius") && (f.LastName == "Harja") select f ).FirstOrDefault();
+                pekka = (from e in entities.Employees
+                             where (e.UserName == LoginController.nimi.UserName)
+                             select e.FirstName + " " + e.LastName).ToArray();
 
-                //juu.EmployeePicture = File.ReadAllBytes(@"C:\x\HiusHarja2.png");
-                //entities.SaveChanges();
+                //employeeName = (from e in entities.Employees
+                //                 where (e.UserName.ToString() == employeeUsername)
+                //                 select e.FirstName + " " + e.LastName).ToArray();
 
-                //Employee newEmployee = new Employee()
-                //{
-                //    FirstName = "Hienolainen",
-                //    LastName = "Harjalainen",
-                //    Active = true,
-                //    EmployeePicture = File.ReadAllBytes(@"C:\x\HiusHarja.png")
-                //};
-                //entities.Employees.Add(newEmployee);
-                //entities.SaveChanges();
-
-                employeeNames = (from e in entities.Employees
-                                              where (e.Active == true)
-                                              select e.FirstName + " " + e.LastName).ToArray();
+                //nn = (LoginController.nimi.FirstName + " " + LoginController.nimi.LastName).ToArray();
             }
             finally
             {
-
                 entities.Dispose();
             }
-            return employeeNames;
+
+            return pekka;
+            //return employeeName;
         }
         public byte[] GetEmployeeImage(string employeeName)
         {
